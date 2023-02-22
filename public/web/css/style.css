@@ -706,7 +706,23 @@ select.form-control:not([size]):not([multiple]) {
 .alert {
     color: #fff;
     border: none;
-    padding: 15px 20px;
+    padding: 15px 30px;
+    margin: 10px;
+
+}
+.alert .close {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 20px;
+    color: #fff;
+    text-shadow: none;
+    opacity: 0.5;
+    padding: 1vw;
+}
+.right-alert{
+    text-align: right;
+    position:absolute;
+    right: 5vw;
 }
 
 .alert .alert-title {
@@ -723,7 +739,17 @@ select.form-control:not([size]):not([multiple]) {
 
 .alert p {
     margin-bottom: 0;
+    display: none;
 }
+.alert.show{
+    display: block;
+    animation: fadein 3s;
+}
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
 
 .alert.alert-has-icon {
     display: flex;
@@ -783,7 +809,7 @@ select.form-control:not([size]):not([multiple]) {
 .card {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
     background-color: #fff;
-    border-radius: 3px;
+    border-radius: 10px;
     border: none;
     position: relative;
     margin-bottom: 30px;
@@ -834,11 +860,11 @@ select.form-control:not([size]):not([multiple]) {
 
 .card .card-header .btn {
     margin-top: 1px;
-    padding: 2px 15px;
+    padding: 5px 15px;
 }
 
 .card .card-header .btn:not(.note-btn) {
-    border-radius: 30px;
+    border-radius: 5px;
 }
 
 .card .card-header .btn:hover {
@@ -871,7 +897,7 @@ select.form-control:not([size]):not([multiple]) {
 .card .card-header h4 + .card-header-action .btn,
 .card .card-header h4 + .card-header-form .btn {
     font-size: 12px;
-    border-radius: 30px !important;
+    border-radius: 8px !important;
     padding-left: 13px !important;
     padding-right: 13px !important;
 }
@@ -2461,6 +2487,9 @@ h6 .badge {
 }
 
 .dropdown-menu .dropdown-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-transform: uppercase;
     font-size: 10px;
     letter-spacing: 1.5px;
@@ -2469,7 +2498,9 @@ h6 .badge {
     padding: 10px 20px;
     line-height: 20px;
     color: #98a6ad;
-}
+    text-align: center;
+    }
+    
 
 .dropdown-menu.dropdown-menu-sm a {
     font-size: 14px;
@@ -4148,6 +4179,9 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu li.active ul.dropdown-men
 }
 .bg-c-pink {
     background: linear-gradient(45deg,#ff869a, #FF5370);
+}
+.bg-c-orange {
+    background: linear-gradient(45deg,#ffaf54, #f89d14);
 }
 .card {    
     -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);

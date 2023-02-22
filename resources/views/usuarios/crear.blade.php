@@ -27,6 +27,12 @@
                         <div class="row">
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
+                                    <label for="name">ID</label>
+                                    {!! Form::number('attendance_id', null, array('class' => 'form-control')) !!}
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="form-group">
                                     <label for="name">Nombre</label>
                                     {!! Form::text('name', null, array('class' => 'form-control')) !!}
                                 </div>
