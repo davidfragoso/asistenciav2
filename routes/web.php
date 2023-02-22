@@ -37,9 +37,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/attendances/{attendance}/edit', [AttendanceController::class, 'edit'])->name('attendances.edit');
     Route::put('/attendances/{attendance}', [AttendanceController::class, 'update'])->name('attendances.update');
     Route::delete('/attendances/{id}', [AttendanceController::class, 'destroy'])->name('attendances.destroy');
+    Route::post('/markAttendance', [AttendanceController::class, 'markAttendance'])->name('attendance.mark');
+    Route::post('/markDeparture', [AttendanceController::class, 'markDeparture'])->name('attendance.departure');
 
-    Route::get('/attendance/assign', [AttendanceController::class, 'assign'])->name('attendance.assign');
-    Route::get('/leave/assign', [AttendanceController::class, 'leave'])->name('leave.assign');
+
+
+    // Route::get('/attendance/assign', [AttendanceController::class, 'assign'])->name('attendance.assign');
+    // Route::get('/leave/assign', [AttendanceController::class, 'leave'])->name('leave.assign');
 
 
 

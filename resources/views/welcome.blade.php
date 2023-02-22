@@ -61,10 +61,17 @@
                             
                             <div class="card-footer text-center">
                                 <div class="links">
-                                    <a href="{{ route('attendance.assign') }}">Entrada</a>
+                                    <form action="{{ route('attendance.mark') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="id" value="{{ $user->id }}">
+                                        <button type="submit">Entrada</button>
+                                    </form>
                                     <span><strong> | </strong></span>
-
-                                    <a href="{{ route('leave.assign') }}">Salida</a>
+                                    <form action="{{ route('attendance.departure') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="attendance_id" value="{{ $attendance->attendance_id }}">
+                                        <button type="submit">Salida</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
