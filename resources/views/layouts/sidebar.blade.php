@@ -1,7 +1,7 @@
 <aside id="sidebar-wrapper">
     <div class="sidebar-brand">
-        <img class="navbar-brand-full app-header-logo" src="{{ asset('img/ae_fondo_claro.png') }}" width="65"
-             alt="Infyom Logo"> AttendEase
+        <img class="navbar-brand-full app-header-logo" src="{{ asset('img/ae_fondo_claro.png') }}" width="120px" height="120px"
+             alt="Infyom Logo">
         <a href="{{ url('/home') }}"></a>
     </div>
     <div class="sidebar-brand sidebar-brand-sm">
