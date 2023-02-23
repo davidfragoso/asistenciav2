@@ -1,6 +1,6 @@
 <aside id="sidebar-wrapper">
     <div class="sidebar-brand">
-        <img class="navbar-brand-full app-header-logo" src="{{ asset('img/ae_claro.png') }}" width="120px" height="120px"
+        <img class="navbar-brand-full app-header-logo" src="{{ asset('img/ae_claro.png') }}" width="150px" height="150px"
              alt="Infyom Logo">
         <a href="{{ url('/home') }}"></a>
     </div>
