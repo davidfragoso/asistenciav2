@@ -90,51 +90,58 @@ class AttendanceController extends Controller
     }
 
     public function markAttendance(Request $request)
-    {
-        $user_id = auth()->id();
-        $attendance_id = User::where('id', $user_id)->pluck('attendance_id')->first();
-    
-        $attendance = Attendance::where('employee_id', $user_id)
-            ->whereDate('check_in', Carbon::today()->toDateString())
-            ->first();
-    
-        if ($attendance) {
-            return redirect()->back()->with('error', 'La asistencia ya ha sido registrada para hoy.');
-        } else {
-            $attendance = new Attendance();
-            $attendance->employee_id = $user_id;
-            $attendance->attendance_id = $attendance_id;
-            $attendance->status = 'present';
-            $attendance->check_in = Carbon::now();
-            $attendance->date = Carbon::today();
-            $attendance->save();
-            return redirect()->back()->with('success', '¡Asistencia marcada!');
-        }
-    }
-    
-
-
-
-
-public function markDeparture(Request $request)
 {
     $user_id = auth()->id();
-    $attendance_id = $request->input('attendance_id');
-    
-    $attendance = Attendance::where('attendance_id', $attendance_id)
-        ->where('employee_id', $user_id)
+    $attendance_id = User::where('id', $user_id)->pluck('attendance_id')->first();
+
+    $attendance = Attendance::where('employee_id', $user_id)
         ->whereDate('check_in', Carbon::today()->toDateString())
         ->first();
 
-    if ($attendance && $attendance->check_out == null) {
-        $attendance->status = 'left';
-        $attendance->check_out = Carbon::now();
-        $attendance->save();
-        return redirect()->back()->with('success', '¡Salida marcada!');
+    if ($attendance) {
+        return redirect()->back()->with('error', 'La asistencia ya ha sido registrada para hoy.');
     } else {
-        return redirect()->back()->with('error', 'No se encontró asistencia registrada para este código de entrada o ya se ha registrado la salida.');
+        $request->validate([
+            'id' => 'required'
+        ]);
+
+        $input_attendance_id = $request->input('id');
+
+        if ($attendance_id != $input_attendance_id) {
+            return view('tu_vista')->with('error', 'El ID de asistencia no es válido.');
+        }
+        
+
+        $attendance = new Attendance();
+        $attendance->employee_id = $user_id;
+        $attendance->attendance_id = $attendance_id;
+        $attendance->status = 'present';
+        $attendance->check_in = Carbon::now();
+        $attendance->date = Carbon::today();
+        $attendance->save();
+        return redirect()->back()->with('success', '¡Asistencia marcada!');
     }
 }
 
+    
 
+    public function markDeparture(Request $request)
+    {
+        $user_id = auth()->id();
+        $attendance_id = $request->input('attendance_id');
+
+        $attendance = Attendance::where('attendance_id', $attendance_id)
+            ->where('employee_id', $user_id)
+            ->whereDate('check_in', Carbon::today()->toDateString())
+            ->first();
+
+        if ($attendance && $attendance->check_out == null) {
+            $attendance->status = 'left';
+            $attendance->check_out = Carbon::now();
+            $attendance->save();
+            return redirect()->back()->with('success', '¡Salida marcada!');
+        } else {
+            return redirect()->back()->with('error', 'No se encontró asistencia registrada para este código de entrada o ya se ha registrado la salida.');
+        }
+    }
 }
