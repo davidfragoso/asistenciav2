@@ -12,4 +12,5 @@
     <ul class="sidebar-menu">
         @include('layouts.menu')
     </ul>
+    
 </aside>

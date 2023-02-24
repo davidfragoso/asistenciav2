@@ -108,7 +108,7 @@ class AttendanceController extends Controller
 
     public function markAttendance(Request $request)
     {
-        $id = $request->input('id');
+        $id = $request->input('attendance_id');
         $attendance = Attendance::where('employee_id', $id)
             ->whereDate('check_in', '=', Carbon::today()->toDateString())->first();
 
@@ -127,14 +127,21 @@ class AttendanceController extends Controller
 
 
     public function markDeparture(Request $request)
-    {
-        $id = $request->input('attendance_id');
-        $attendance = Attendance::where('attendance_id', $id)->whereNull('check_out')->first();
-        if ($attendance) {
-            $attendance->update(['check_out' => now()]);
-            return redirect()->back()->with('success', '¡Salida marcada!');
-        } else {
-            return redirect()->back()->with('error', 'El usuario no tiene asistencia de entrada registrada o ya ha marcado su salida.');
-        }
+{
+    $id = $request->input('attendance_id');
+    $attendance = Attendance::where('attendance_id', $id)
+        ->whereNotNull('employee_id')
+        ->first();
+
+    if ($attendance && $attendance->check_out == null) {
+        $attendance->status = 'left';
+        $attendance->check_out = Carbon::now();
+        $attendance->save();
+        return redirect()->back()->with('success', '¡Salida marcada!');
+    } else {
+        return redirect()->back()->with('error', 'No se encontró asistencia registrada para este código de entrada o ya se ha registrado la salida.');
     }
+}
+
+
 }
