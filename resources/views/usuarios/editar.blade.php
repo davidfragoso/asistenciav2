@@ -27,10 +27,16 @@
                         <div class="row">
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
-                                    <label for="name">ID</label>
-                                    {!! Form::number('attendance_id', null, array('class' => 'form-control')) !!}
+                                    <label for="attendance_id">ID Asistencia</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="attendance_id" name="attendance_id" value="{{ old('attendance_id', $user->attendance_id) }}" required>
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btn-primary" id="generate-id">Generar ID aleatorio</button>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            </div>                            
+                            
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
                                     <label for="name">Nombre</label>

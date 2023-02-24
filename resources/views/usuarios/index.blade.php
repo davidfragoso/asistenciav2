@@ -15,6 +15,7 @@
             <table class="table table-striped mt-2">
               <thead style="background-color:#6777ef">
                 <th style="color:#fff">ID</th>
+                <th style="color:#fff">Asistencia_ID</th>
                 <th style="color:#fff;">Nombre</th>
                 <th style="color:#fff;">E-mail</th>
                 <th style="color:#fff;">Rol</th>
@@ -23,6 +24,7 @@
               <tbody>
                 @foreach ($usuarios as $usuario)
                 <tr>
+                  <td>{{ $usuario->id }}</td>
                   <td>{{ $usuario->attendance_id }}</td>
                   <td>{{ $usuario->name }}</td>
                   <td>{{ $usuario->email }}</td>

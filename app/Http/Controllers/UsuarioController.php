@@ -38,11 +38,15 @@ class UsuarioController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        //aqui trabajamos con name de las tablas de users
-        $roles = Role::pluck('name','name')->all();
-        return view('usuarios.crear',compact('roles'));
-    }
+{
+    // Generar un ID de asistencia aleatorio
+    $attendance_id = $this->generateAttendanceId();
+
+    //aqui trabajamos con name de las tablas de users
+    $roles = Role::pluck('name','name')->all();
+    return view('usuarios.crear',compact('roles', 'attendance_id'));
+}
+
 
     /**
      * Store a newly created resource in storage.
@@ -51,23 +55,32 @@ class UsuarioController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        $this->validate($request, [
-            'attendance_id' => 'required',
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|same:confirm-password',
-            'roles' => 'required'
-        ]);
-    
-        $input = $request->all();
-        $input['password'] = Hash::make($input['password']);
-    
-        $user = User::create($input);
-        $user->assignRole($request->input('roles'));
-    
-        return redirect()->route('usuarios.index');
+{
+    $this->validate($request, [
+        'name' => 'required',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'same:confirm-password',
+        'roles' => 'required',
+    ]);
+
+    // Verificar si se ingresó un ID de asistencia manualmente
+    if ($request->has('attendance_id')) {
+        $attendance_id = $request->input('attendance_id');
+    } else {
+        // Generar un ID de asistencia aleatorio de 8 dígitos
+        $attendance_id = mt_rand(10000000, 99999999);
     }
+
+    $input = $request->except(['attendance_id']);
+    $input['attendance_id'] = $attendance_id;
+    $input['password'] = Hash::make($input['password']);
+
+    $user = User::create($input);
+    $user->assignRole($request->input('roles'));
+
+    return redirect()->route('usuarios.index');
+}
+
 
     /**
      * Display the specified resource.
@@ -122,12 +135,19 @@ class UsuarioController extends Controller
     
         $user = User::find($id);
         $user->update($input);
-        DB::table('model_has_roles')->where('model_id',$id)->delete();
     
+        // Si el usuario ha cambiado su ID de asistencia, actualizamos la columna attendance_id
+        if ($user->attendance_id != $request->input('attendance_id')) {
+            $user->attendance_id = $request->input('attendance_id');
+            $user->save();
+        }
+    
+        DB::table('model_has_roles')->where('model_id',$id)->delete();
         $user->assignRole($request->input('roles'));
     
         return redirect()->route('usuarios.index');
     }
+    
 
     /**
      * Remove the specified resource from storage.
@@ -140,4 +160,15 @@ class UsuarioController extends Controller
         User::find($id)->delete();
         return redirect()->route('usuarios.index');
     }
+
+    /**
+ * Generate a random attendance ID.
+ *
+ * @return int
+ */
+public function generateAttendanceId()
+{
+    return rand(10000000, 99999999);
+}
+
 }
