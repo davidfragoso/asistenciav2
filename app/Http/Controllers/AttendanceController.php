@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Attendance;
 use App\Models\User;
-
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-
 
 class AttendanceController extends Controller
 {
@@ -21,10 +19,11 @@ class AttendanceController extends Controller
         });
     }
     public function index()
-    {
-        $attendances = Attendance::paginate(5);
-        return view('attendances.index', compact('attendances'));
-    }
+{
+    $attendances = Attendance::with('user')->paginate(5);
+    return view('attendances.index', compact('attendances'));
+}
+
 
     public function create()
     {
@@ -41,7 +40,7 @@ class AttendanceController extends Controller
         ]);
 
         $attendance = new Attendance();
-        $attendance->employee_id = auth()->user()->id;
+        $attendance->user_id = auth()->user()->id;
         $attendance->status = 'present';
         $attendance->check_in = Carbon::createFromFormat('Y-m-d H:i:s', $request->input('check_in'));
         $attendance->check_out = Carbon::createFromFormat('Y-m-d H:i:s', $request->input('check_out'));
@@ -77,7 +76,6 @@ class AttendanceController extends Controller
             ->with('success', 'Asistencia actualizada correctamente.');
     }
 
-
     public function destroy($id)
     {
         $attendance = Attendance::find($id);
@@ -90,40 +88,38 @@ class AttendanceController extends Controller
     }
 
     public function markAttendance(Request $request)
-{
-    $user_id = auth()->id();
-    $attendance_id = User::where('id', $user_id)->pluck('attendance_id')->first();
+    {
+        $user_id = auth()->id();
+        $attendance_id = User::where('id', $user_id)->pluck('attendance_id')->first();
 
-    $attendance = Attendance::where('employee_id', $user_id)
-        ->whereDate('check_in', Carbon::today()->toDateString())
-        ->first();
+        $attendance = Attendance::where('employee_id', $user_id)
+            ->whereDate('check_in', Carbon::today()->toDateString())
+            ->first();
 
-    if ($attendance) {
-        return redirect()->back()->with('error', 'La asistencia ya ha sido registrada para hoy.');
-    } else {
-        $request->validate([
-            'id' => 'required'
-        ]);
+        if ($attendance) {
+            return redirect()->back()->with('error', 'La asistencia ya ha sido registrada para hoy.');
+        } else {
+            $request->validate([
+                'id' => 'required'
+            ]);
 
-        $input_attendance_id = $request->input('id');
+            $input_attendance_id = $request->input('id');
 
-        if ($attendance_id != $input_attendance_id) {
-            return view('tu_vista')->with('error', 'El ID de asistencia no es válido.');
+            if ($attendance_id != $input_attendance_id) {
+                return view('tu_vista')->with('error', 'El ID de asistencia no es válido.');
+            }
+
+
+            $attendance = new Attendance();
+            $attendance->employee_id = $user_id;
+            $attendance->attendance_id = $attendance_id;
+            $attendance->status = 'present';
+            $attendance->check_in = Carbon::now();
+            $attendance->date = Carbon::today();
+            $attendance->save();
+            return redirect()->back()->with('success', '¡Asistencia marcada!');
         }
-        
-
-        $attendance = new Attendance();
-        $attendance->employee_id = $user_id;
-        $attendance->attendance_id = $attendance_id;
-        $attendance->status = 'present';
-        $attendance->check_in = Carbon::now();
-        $attendance->date = Carbon::today();
-        $attendance->save();
-        return redirect()->back()->with('success', '¡Asistencia marcada!');
     }
-}
-
-    
 
     public function markDeparture(Request $request)
     {

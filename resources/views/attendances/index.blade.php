@@ -34,6 +34,7 @@
                 <th style="color:#fff;">Fecha</th>
                 <th style="color:#fff;">Hora Entrada</th>
                 <th style="color:#fff;">Hora salida</th>
+                <th style="color:#fff;">Estatus</th>
                 <th style="color:#fff;">Acciones</th>
               </tr>
             </thead>
@@ -57,6 +58,8 @@
                   @endif
                   {{ $attendance->check_out ? \Carbon\Carbon::parse($attendance->check_out)->format('H:i:s') : '-' }}
                 </td>
+                <td><h5><span class="badge badge-dark">{{ $attendance->status }}</span></h5></td>
+
                 <td>
                   <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal"
                     data-attendance-id="{{ $attendance->id }}">Eliminar</button>

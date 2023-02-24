@@ -46,15 +46,15 @@
                             <div class="col-md-4 col-xl-4">
                                 <div class="card bg-c-pink order-card">
                                     <div class="card-block">
-                                        <h5>Departamentos
+                                        <h5>Asistencias
                                         </h5>
                                         @php
-                                        use App\Models\Blog;
-                                        $cant_blogs = Blog::count();
+                                        use App\Models\Attendance;
+                                        $cant_attendance = Attendance::count();
                                         @endphp
                                         <h2 class="text-right"><i
-                                                class="fa fa-users-rectangle f-left"></i><span>{{$cant_blogs}}</span></h2>
-                                        <p class="m-b-0 text-right"><a href="/blogs" class="text-white">Ver más</a></p>
+                                                class="fa fa-user-clock f-left"></i><span>{{$cant_attendance}}</span></h2>
+                                        <p class="m-b-0 text-right"><a href="/attendances" class="text-white">Ver más</a></p>
                                     </div>
                                 </div>
                             </div>
