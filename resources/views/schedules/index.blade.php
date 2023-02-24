@@ -5,20 +5,20 @@
     <div class="section-header">
         <h3 class="page__heading">Horarios</h3>
         @if (session('message'))
-    <div class="alert alert-{{ session('alert-type') }} alert-dismissible fade show right-alert" role="alert">
-        {{ session('message') }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <script>
-        $(document).ready(function() {
+        <div class="alert alert-{{ session('alert-type') }} alert-dismissible fade show right-alert" role="alert">
+            {{ session('message') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <script>
+            $(document).ready(function() {
             $(".alert").fadeTo(3000, 500).slideUp(500, function() {
                 $(".alert").slideUp(500);
             });
         });
-    </script>
-@endif
+        </script>
+        @endif
 
     </div>
     <div class="section-body">
@@ -32,6 +32,7 @@
                 <table class="table table-striped mt-2">
                     <thead style="background-color:#6777ef">
                         <tr>
+                            <th style="color:#fff;">ID</th>
                             <th style="color:#fff;">Hora Inicio</th>
                             <th style="color:#fff;">Hora Fin</th>
                             <th style="color:#fff;">Día semana</th>
@@ -41,6 +42,7 @@
                     <tbody>
                         @foreach($schedules as $schedule)
                         <tr>
+                            <td>{{ $schedule->id }}</td>
                             <td>{{ $schedule->start_time }}</td>
                             <td>{{ $schedule->end_time }}</td>
                             <td>{{ $schedule->day_of_week }}</td>
@@ -87,7 +89,7 @@
                 </table>
             </div>
             <div class="card-footer">
-                
+
                 <!-- Centramos la paginacion a la derecha -->
                 <div class="pagination justify-content-end">
                     {!! $schedules->links() !!}
@@ -126,6 +128,11 @@
                                             <option value="Viernes">Viernes</option>
                                             <option value="Sabado">Sábado</option>
                                             <option value="Domingo">Domingo</option>
+                                            <option value="L-V">L-V</option>
+                                            <option value="L-S">L-S</option>
+                                            <option value="L-D">L-D</option>
+
+
                                         </select>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Agregar</button>

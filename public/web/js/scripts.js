@@ -699,21 +699,24 @@ $(function () {
             .attr("action", "/attendances/" + attendance_id);
     });
 
+    // Obtener referencia al botón "Generar ID aleatorio"
+    const generateIdBtn = document.querySelector("#generate-id");
+
+    // Obtener referencia al campo de entrada de ID de asistencia
+    const attendanceIdInput = document.querySelector("#attendance_id");
+
+    // Agregar evento "click" al botón "Generar ID aleatorio"
+    generateIdBtn.addEventListener("click", () => {
+        // Generar un nuevo ID aleatorio
+        const newId = Math.floor(Math.random() * 90000000) + 10000000;
+
+        // Actualizar el valor del campo de entrada de ID de asistencia
+        attendanceIdInput.value = newId;
+    });
+
    
-      
-// Obtener referencia al botón "Generar ID aleatorio"
-const generateIdBtn = document.querySelector('#generate-id');
-    
-// Obtener referencia al campo de entrada de ID de asistencia
-const attendanceIdInput = document.querySelector('#attendance_id');
 
-// Agregar evento "click" al botón "Generar ID aleatorio"
-generateIdBtn.addEventListener('click', () => {
-    // Generar un nuevo ID aleatorio
-    const newId = Math.floor(Math.random() * 90000000) + 10000000;
-    
-    // Actualizar el valor del campo de entrada de ID de asistencia
-    attendanceIdInput.value = newId;
-});
 
+   
+ 
 });

@@ -35,6 +35,8 @@
                                     <option value="Viernes">Viernes</option>
                                     <option value="Sabado">Sábado</option>
                                     <option value="Domingo">Domingo</option>
+                                    <option value="L-V">L-V</option>
+
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-primary">Agregar</button>

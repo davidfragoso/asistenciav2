@@ -55,7 +55,7 @@
                   @if ($attendance->overtime)
                   <span class="badge badge-success">Hora extra</span>
                   @endif
-                  {{ $attendance->check_out ? \Carbon\Carbon::parse($attendance->check_in)->format('H:i:s') : '-' }}
+                  {{ $attendance->check_out ? \Carbon\Carbon::parse($attendance->check_out)->format('H:i:s') : '-' }}
                 </td>
                 <td>
                   <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal"
