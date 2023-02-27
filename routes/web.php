@@ -6,9 +6,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\ScheduleController;
-use App\Http\Controllers\ScheduleDeleteController;
-use App\Http\Controllers\ScheduleDataController;
 use App\Http\Controllers\AttendanceController;
 
 
@@ -31,6 +30,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('blogs', BlogController::class);
 
 
+
     Route::get('/attendances', [AttendanceController::class, 'index'])->name('attendances.index');
     Route::get('/attendances/create', [AttendanceController::class, 'create'])->name('attendances.create');
     Route::post('/attendances', [AttendanceController::class, 'store'])->name('attendances.store');
@@ -41,10 +41,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/markDeparture', [AttendanceController::class, 'markDeparture'])->name('attendance.departure');
 
 
-
-    // Route::get('/attendance/assign', [AttendanceController::class, 'assign'])->name('attendance.assign');
-    // Route::get('/leave/assign', [AttendanceController::class, 'leave'])->name('leave.assign');
-
+    Route::get('/departments', [DepartamentoController::class, 'index'])->name('departments.index');
+    Route::get('/departments/create', [DepartamentoController::class, 'create'])->name('departments.create');
+    Route::post('/departments', [DepartamentoController::class, 'store'])->name('departments.store');
+    Route::get('/departments/{department}/edit', [DepartamentoController::class, 'edit'])->name('departments.edit');
+    Route::put('/departments/{department}', [DepartamentoController::class, 'update'])->name('departments.update');
+    Route::delete('/departments/{id}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
 
 
     Route::get('schedules', [ScheduleController::class, 'index'])->name('schedules.index'); //vista principal de horarios

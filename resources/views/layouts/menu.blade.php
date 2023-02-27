@@ -38,7 +38,7 @@
 
 
 <li class="side-menus  {{ Request::is('blogs') ? 'active' : '' }}">
-    <a class="nav-link" href="/blogs">
+    <a class="nav-link" href="/departments">
         <i class=" fas fa-users"></i><span> Departamentos</span>
     </a>
 </li>

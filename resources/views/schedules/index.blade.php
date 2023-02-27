@@ -81,7 +81,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <!-- Modal -->
                         </td>
                         </tr>

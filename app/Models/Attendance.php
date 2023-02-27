@@ -13,6 +13,7 @@ class Attendance extends Model
     protected $fillable = [
         'employee_id',
         'attendance_id',
+        'department_id',
         'check_in',
         'check_out',
         'late',
@@ -20,8 +21,11 @@ class Attendance extends Model
     ];
 
     public function user()
-{
-    return $this->belongsTo(User::class, 'employee_id', 'id');
-}
-
+    {
+        return $this->belongsTo(User::class, 'employee_id', 'id');
+    }
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
 }
