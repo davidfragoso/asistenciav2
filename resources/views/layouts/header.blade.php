@@ -19,10 +19,10 @@
                    CONFIGURACIÓN
                 </div>
             </div>
-            <a class="dropdown-item has-icon edit-profile" href="#" data-id="{{ \Auth::id() }}">
+            {{-- <a class="dropdown-item has-icon edit-profile" href="#" data-id="{{ \Auth::id() }}">
                 <i class="fa fa-user"></i>Editar perfil</a>
             <a class="dropdown-item has-icon" data-toggle="modal" data-target="#changePasswordModal" href="#"
-                data-id="{{ \Auth::id() }}"><i class="fa fa-lock"> </i>Cambiar contraseña</a>
+                data-id="{{ \Auth::id() }}"><i class="fa fa-lock"> </i>Cambiar contraseña</a> --}}
             <a href="{{ url('logout') }}" class="dropdown-item has-icon text-danger"
                 onclick="event.preventDefault(); localStorage.clear();  document.getElementById('logout-form').submit();">
                 <i class="fas fa-sign-out-alt"></i> Cerrar sesión

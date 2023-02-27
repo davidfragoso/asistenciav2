@@ -31,6 +31,7 @@
               <tr>
                 <th style="color:#fff;">ID</th>
                 <th style="color:#fff;">Nombre</th>
+                <th style="color:#fff;">ID Asistencia</th>
                 <th style="color:#fff;">Fecha</th>
                 <th style="color:#fff;">Hora Entrada</th>
                 <th style="color:#fff;">Hora salida</th>
@@ -43,6 +44,7 @@
               <tr>
                 <td>{{ $attendance->id }}</td>
                 <td>{{ $attendance->user ? $attendance->user->name : '-' }}</td>
+                <td>{{ $attendance->attendance_id }}</td>
                 <td>{{ $attendance->created_at->format('d/m/Y') }}
 
                 </td>
