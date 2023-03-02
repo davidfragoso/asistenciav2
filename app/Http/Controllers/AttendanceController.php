@@ -43,7 +43,7 @@ class AttendanceController extends Controller
 
         $attendance = new Attendance();
         $attendance->user_id = auth()->user()->id;
-        $attendance->status = 'present';
+        $attendance->status = 'presente';
         $attendance->check_in = Carbon::createFromFormat('Y-m-d H:i:s', $request->input('check_in'));
         $attendance->check_out = Carbon::createFromFormat('Y-m-d H:i:s', $request->input('check_out'));
         $attendance->late = $request->input('late');
@@ -79,31 +79,29 @@ class AttendanceController extends Controller
     }
 
     public function markAttendance(Request $request)
-    {
-        $user_id = auth()->id();
+{
+    $user_id = auth()->id();
 
-        // Verificar si ya hay una asistencia registrada para el usuario en la fecha actual
-        $existing_attendance = Attendance::where('user_id', $user_id)
-            ->whereDate('date', Carbon::today()->toDateString())
-            ->first();
+    // Verificar si ya hay una asistencia registrada para el usuario en la fecha actual
+    $existing_attendance = Attendance::where('user_id', $user_id)
+        ->whereDate('date', Carbon::today()->toDateString())
+        ->first();
 
-        if ($existing_attendance) {
-            // Si ya hay una entrada de asistencia, actualizar la hora de salida y el estado a "left"
-            $existing_attendance->check_out = Carbon::now();
-            $existing_attendance->status = 'left';
-            $existing_attendance->save();
-            $button_text = 'Entrada'; // Actualizar el texto del botón a 'Entrada'
-            return redirect()->back()->with('success', '¡Salida registrada correctamente!')
-                ->with('button_text', $button_text);
-        }
-
+    if ($existing_attendance) {
+        // Si ya hay una entrada de asistencia, actualizar la hora de salida y el estado a "left"
+        $existing_attendance->check_out = Carbon::now();
+        $existing_attendance->status = 'retirado';
+        $existing_attendance->save();
+        $button_text = 'Entrada'; // Actualizar el texto del botón a 'Entrada'
+        $message = '¡Salida registrada correctamente!';
+    } else {
         // Si no hay una entrada de asistencia existente, actualizar el estado de la última asistencia del usuario (si existe)
         $last_attendance = Attendance::where('user_id', $user_id)
             ->orderBy('id', 'desc')
             ->first();
 
-        if ($last_attendance && $last_attendance->date == Carbon::today()->toDateString() && $last_attendance->status == 'present') {
-            $last_attendance->status = 'left';
+        if ($last_attendance && $last_attendance->date == Carbon::today()->toDateString() && $last_attendance->status == 'presente') {
+            $last_attendance->status = 'retirado';
             $last_attendance->save();
         }
 
@@ -114,7 +112,7 @@ class AttendanceController extends Controller
         $attendance->user_id = $user_id;
         $attendance->employee_id = $user_id;
         $attendance->check_in = Carbon::now();
-        $attendance->status = 'present';
+        $attendance->status = 'presente';
         $attendance->date = Carbon::now()->toDateString();
         $attendance->attendance_id = $attendance_id; // asignar el valor de attendance_id
         $attendance->save();
@@ -132,11 +130,15 @@ class AttendanceController extends Controller
         if ($saved_attendance->attendance_id == $attendance->attendance_id) {
             $request->session()->put('attendance_id', $attendance->id);
             $button_text = 'Salida'; // Actualizar el texto del botón a 'Salida'
-            return redirect()->back()->with('success', '¡Asistencia marcada correctamente!')
-                ->with('button_text', $button_text);
+            $message = '¡Asistencia marcada correctamente!';
         } else {
             // Si el valor de attendance_id es incorrecto, mostrar un mensaje de error
             return redirect()->back()->with('error', 'Ha ocurrido un error al marcar la asistencia. Por favor, inténtelo de nuevo.');
         }
     }
+
+    return redirect()->back()->with('success', $message)
+        ->with('button_text', $button_text);
+}
+
 }
