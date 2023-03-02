@@ -19,6 +19,7 @@ class AttendanceController extends Controller
             return $next($request);
         });
     }
+
     public function index()
     {
         $attendances = Attendance::with('user')->paginate(10);
@@ -106,17 +107,36 @@ class AttendanceController extends Controller
             $last_attendance->save();
         }
 
+        $attendance_id = User::where('id', $user_id)->value('attendance_id');
+
         // Crear un nuevo registro de asistencia
         $attendance = new Attendance;
-        $attendance->user_id = $user_id; // Actualizar esta línea para asignar el valor de user_id
+        $attendance->user_id = $user_id;
         $attendance->employee_id = $user_id;
         $attendance->check_in = Carbon::now();
         $attendance->status = 'present';
         $attendance->date = Carbon::now()->toDateString();
+        $attendance->attendance_id = $attendance_id; // asignar el valor de attendance_id
         $attendance->save();
-        $button_text = 'Salida'; // Actualizar el texto del botón a 'Salida'
 
-        return redirect()->back()->with('success', '¡Asistencia marcada correctamente!')
-            ->with('button_text', $button_text);
+        // Obtener el valor de attendance_id del usuario actual
+        $user = User::find($user_id);
+        $attendance->attendance_id = $user->attendance_id;
+
+        $attendance->save();
+
+        // Consultar la base de datos para obtener el registro de asistencia recién guardado
+        $saved_attendance = Attendance::where('id', $attendance->id)->first();
+
+        // Verificar si el valor de attendance_id es correcto
+        if ($saved_attendance->attendance_id == $attendance->attendance_id) {
+            $request->session()->put('attendance_id', $attendance->id);
+            $button_text = 'Salida'; // Actualizar el texto del botón a 'Salida'
+            return redirect()->back()->with('success', '¡Asistencia marcada correctamente!')
+                ->with('button_text', $button_text);
+        } else {
+            // Si el valor de attendance_id es incorrecto, mostrar un mensaje de error
+            return redirect()->back()->with('error', 'Ha ocurrido un error al marcar la asistencia. Por favor, inténtelo de nuevo.');
+        }
     }
 }

@@ -20,10 +20,13 @@ class Attendance extends Model
         'overtime'
     ];
 
+
     public function user()
     {
-        return $this->belongsTo(User::class, 'employee_id', 'id');
+        return $this->belongsTo('App\Models\User');
     }
+
+
     public function department()
     {
         return $this->belongsTo(Department::class);
