@@ -55,6 +55,8 @@
                             <div class="card-body">
                                 <div class="flex-center position-ref full-height">
                                     <div class="content">
+                                        <h4>Bienvenido, {{ auth()->user()->name }}</h4>
+                                        <h4>Hoy es {{ \Carbon\Carbon::now()->format('d/m/Y') }}</h4>
                                         <div class="title m-b-md">
                                             <div class="clockStyle" id="clock">123</div>
                                         </div>
@@ -64,77 +66,71 @@
 
                             <div class="card-footer text-center">
                                 <div class="links">
-                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    @if(session('button_text') == 'Salida')
+                                    <button class="btn btn-danger" data-toggle="modal"
+                                        data-target="#markAttendanceModal">Salida</button>
+                                    @else
+                                    <button class="btn btn-primary" data-toggle="modal"
                                         data-target="#markAttendanceModal">Entrada</button>
-                                    <span><strong> | </strong></span>
-                                    <button type="button" class="btn btn-primary" data-toggle="modal"
-                                        data-target="#markExitModal">Salida</button>
-                                </div>
-                            </div>
-                        </div>
+                                    @endif
 
-                        <!-- Mark Attendance Modal -->
-                        <div class="modal fade" id="markAttendanceModal" tabindex="-1" role="dialog"
-                            aria-labelledby="markAttendanceModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="markAttendanceModalLabel">Marcar entrada</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <form id="markAttendanceForm" action="{{ route('attendance.mark') }}" method="POST">
-                                        @csrf
-                                        <div class="modal-body">
-                                            <div class="form-group">
-                                                <label for="attendance_id">ID de asistencia:</label>
-                                                <input type="text" class="form-control" id="attendance_id" name="id">
+                                </div>
+
+                                <div class="modal fade" id="markAttendanceModal" tabindex="-1" role="dialog"
+                                    aria-labelledby="markAttendanceModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="markAttendanceModalLabel">
+                                                    @if(session('button_text') == 'Salida')
+                                                    Marcar salida
+                                                    @else
+                                                    Marcar entrada
+                                                    @endif
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
                                             </div>
+                                            <form id="markAttendanceForm" action="{{ route('attendance.mark') }}"
+                                                method="POST">
+                                                @csrf
+                                                <div class="modal-body">
+                                                    <div class="form-group">
+                                                        <label for="user_id">ID de usuario:</label>
+                                                        <input type="text" class="form-control" id="user_id"
+                                                            name="user_id">
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Cerrar</button>
+                                                    <button type="submit" class="btn
+                                                    @if(session('button_text') == 'Salida')
+                                                    btn-danger
+                                                    @else
+                                                    btn-primary
+                                                    @endif
+                                                    ">
+                                                        @if(session('button_text') == 'Salida')
+                                                        Marcar salida
+                                                        @else
+                                                        Marcar entrada
+                                                        @endif
+                                                    </button>
+                                                </div>
+                                            </form>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Cerrar</button>
-                                            <button type="submit" class="btn btn-primary">Marcar</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Mark Exit Modal -->
-                        <div class="modal fade" id="markExitModal" tabindex="-1" role="dialog"
-                            aria-labelledby="markExitModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="markExitModalLabel">Marcar Salida</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
                                     </div>
-                                    <form id="markExitForm" action="{{ route('attendance.departure') }}" method="POST">
-                                        @csrf
-                                        <div class="modal-body">
-                                            <div class="form-group">
-                                                <label for="attendance_id">ID de asistencia:</label>
-                                                <input type="text" class="form-control" id="attendance_id"
-                                                    name="attendance_id">
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Cerrar</button>
-                                            <button type="submit" class="btn btn-primary">Marcar Salida</button>
-                                        </div>
-                                    </form>
+
                                 </div>
                             </div>
                         </div>
-
 
                     </div>
                 </div>
+
             </div>
         </section>
     </div>

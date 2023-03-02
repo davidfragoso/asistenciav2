@@ -12,20 +12,14 @@ class DepartamentoController extends Controller
 {
     public function index()
     {
-        $departments = Department::paginate(5);
-
-        $departments = Department::with('schedules')->get();
-
-    return view('schedules.index', compact('departments'));
-
+        $departments = Department::with('jefe')->paginate(5);
+        return view('departments.index', compact('departments'));
     }
 
     public function create()
     {
         $jefes_departamento = User::role('jefe')->get();
         return view('departments.crear', compact('jefes_departamento'));
-
-
     }
 
     public function store(Request $request)
@@ -37,9 +31,9 @@ class DepartamentoController extends Controller
             'num_empleados' => 'required',
 
         ]);
-        
-        
-        
+
+
+
 
         $department = new Department([
             'name' => $request->get('name'),

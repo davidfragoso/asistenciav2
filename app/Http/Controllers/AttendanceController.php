@@ -77,63 +77,46 @@ class AttendanceController extends Controller
             ->with('success', 'Asistencia actualizada correctamente.');
     }
 
-    public function destroy($id)
-    {
-        $attendance = Attendance::find($id);
-
-        $attendance->delete();
-        session()->flash('message', 'Asistencia eliminada correctamente.');
-        session()->flash('alert-type', 'danger');
-
-        return redirect()->route('attendances.index');
-    }
-
     public function markAttendance(Request $request)
     {
         $user_id = auth()->id();
-        $attendance_id = User::where('id', $user_id)->pluck('attendance_id')->first();
 
-        $attendance = Attendance::where('employee_id', $user_id)
-            ->whereDate('check_in', Carbon::today()->toDateString())
+        // Verificar si ya hay una asistencia registrada para el usuario en la fecha actual
+        $existing_attendance = Attendance::where('user_id', $user_id)
+            ->whereDate('date', Carbon::today()->toDateString())
             ->first();
 
-        if ($attendance) {
-            return redirect()->back()->with('error', 'La asistencia ya ha sido registrada para hoy.');
-        } else {
-            $request->validate([
-                'id' => 'required'
-            ]);
-
-            $input_attendance_id = $request->input('id');
-
-            if ($attendance_id != $input_attendance_id) {
-                return view('welcome')->with('error', 'El ID de asistencia no es válido.');
-            }
-
-            // Obtener los departamentos disponibles y enviarlos a la vista
-            $departments = Department::all();
-            return view('attendance', compact('departments'));
+        if ($existing_attendance) {
+            // Si ya hay una entrada de asistencia, actualizar la hora de salida y el estado a "left"
+            $existing_attendance->check_out = Carbon::now();
+            $existing_attendance->status = 'left';
+            $existing_attendance->save();
+            $button_text = 'Entrada'; // Actualizar el texto del botón a 'Entrada'
+            return redirect()->back()->with('success', '¡Salida registrada correctamente!')
+                ->with('button_text', $button_text);
         }
-    }
 
-
-    public function markDeparture(Request $request)
-    {
-        $user_id = auth()->id();
-        $attendance_id = $request->input('attendance_id');
-
-        $attendance = Attendance::where('attendance_id', $attendance_id)
-            ->where('employee_id', $user_id)
-            ->whereDate('check_in', Carbon::today()->toDateString())
+        // Si no hay una entrada de asistencia existente, actualizar el estado de la última asistencia del usuario (si existe)
+        $last_attendance = Attendance::where('user_id', $user_id)
+            ->orderBy('id', 'desc')
             ->first();
 
-        if ($attendance && $attendance->check_out == null) {
-            $attendance->status = 'left';
-            $attendance->check_out = Carbon::now();
-            $attendance->save();
-            return redirect()->back()->with('success', '¡Salida marcada!');
-        } else {
-            return redirect()->back()->with('error', 'No se encontró asistencia registrada para este código de entrada o ya se ha registrado la salida.');
+        if ($last_attendance && $last_attendance->date == Carbon::today()->toDateString() && $last_attendance->status == 'present') {
+            $last_attendance->status = 'left';
+            $last_attendance->save();
         }
+
+        // Crear un nuevo registro de asistencia
+        $attendance = new Attendance;
+        $attendance->user_id = $user_id; // Actualizar esta línea para asignar el valor de user_id
+        $attendance->employee_id = $user_id;
+        $attendance->check_in = Carbon::now();
+        $attendance->status = 'present';
+        $attendance->date = Carbon::now()->toDateString();
+        $attendance->save();
+        $button_text = 'Salida'; // Actualizar el texto del botón a 'Salida'
+
+        return redirect()->back()->with('success', '¡Asistencia marcada correctamente!')
+            ->with('button_text', $button_text);
     }
 }

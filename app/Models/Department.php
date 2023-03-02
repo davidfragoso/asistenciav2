@@ -15,7 +15,11 @@ class Department extends Model
         'jefe_id',
         'num_empleados',
     ];
-
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class);
+    }
+    
     public function jefe()
     {
         return $this->belongsTo(User::class, 'jefe_id');

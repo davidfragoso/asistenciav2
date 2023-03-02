@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('content')
-
 <section class="section">
     <div class="section-header">
         <h3 class="page__heading">Horarios</h3>
@@ -28,11 +27,13 @@
                 <a class="btn btn-warning" data-toggle="modal" data-target="#createScheduleModal">
                     Nuevo
                 </a>
-
+    
                 <table class="table table-striped mt-2">
                     <thead style="background-color:#6777ef">
                         <tr>
                             <th style="color:#fff;">ID</th>
+                            <th style="color:#fff;">ID Departamento</th>
+                            <th style="color:#fff;">Departamento</th>
                             <th style="color:#fff;">Hora Inicio</th>
                             <th style="color:#fff;">Hora Fin</th>
                             <th style="color:#fff;">Día semana</th>
@@ -40,9 +41,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($schedules as $schedule)
+                        @foreach($schedules ?? '' as $schedule)
                         <tr>
                             <td>{{ $schedule->id }}</td>
+                            <td>{{ $schedule->department_id }}</td>
+                            <td>{{ $schedule->department }}</td>
                             <td>{{ $schedule->start_time }}</td>
                             <td>{{ $schedule->end_time }}</td>
                             <td>{{ $schedule->day_of_week }}</td>
@@ -54,7 +57,7 @@
                             </td>
                         </tr>
                         @endforeach
-
+    
                         <!-- Modal de confirmación -->
                         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
                             aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -73,6 +76,7 @@
                                         <form id="deleteForm" action="#" method="POST" class="d-inline-block">
                                             @csrf
                                             @method('DELETE')
+    
                                             <button type="button" class="btn btn-secondary"
                                                 data-dismiss="modal">Cancelar</button>
                                             <button type="submit" class="btn btn-danger">Eliminar</button>
@@ -91,7 +95,7 @@
 
                 <!-- Centramos la paginacion a la derecha -->
                 <div class="pagination justify-content-end">
-                    {!! $schedules->links() !!}
+                    {!! $schedules ->links() !!}
                 </div>
                 <!-- Modal -->
                 <div class="modal fade" id="createScheduleModal" tabindex="-1" role="dialog"
@@ -108,6 +112,16 @@
                                 <!-- Aquí va el formulario para ingresar los datos del horario -->
                                 <form method="POST" action="{{route('schedules.store')}}">
                                     @csrf
+                                    <div class="form-group">
+                                        <label for="department_id">Departamento</label>
+                                        <select name="department_id" id="department_id" class="form-control">
+                                            <option value="#">--Selecciona un departamento--</option>
+                                            @foreach($departments as $department)
+                                                <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    
                                     <div class="form-group">
                                         <label for="start_time">Hora de Inicio</label>
                                         <input type="time" class="form-control" id="start_time" name="start_time"

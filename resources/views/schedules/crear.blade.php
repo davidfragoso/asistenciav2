@@ -18,6 +18,10 @@
                         <form method="POST" action="{{route('schedules.store')}}">
                             @csrf
                             <div class="form-group">
+                                <label for="start_time">Departamento</label>
+                                <input type="time" class="form-control" id="start_time" name="start_time" required>
+                            </div>
+                            <div class="form-group">
                                 <label for="start_time">Hora de Inicio</label>
                                 <input type="time" class="form-control" id="start_time" name="start_time" required>
                             </div>
