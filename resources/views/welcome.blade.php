@@ -25,11 +25,13 @@
                 <div class="row">
                     <div class="container">
                         <div class="login-brand">
-                            <h3 class="page__heading">Asistencia</h3>
+                            <h2 class="page__heading">Asistencia</h2>
                         </div>
 
                         <div class="card card-primary">
                             <div class="card-header">
+                                <h3>Hoy es {{ \Carbon\Carbon::now()->format('d/m/Y') }}</h3>
+
                                 @if (Route::has('login'))
                                 <div class="top-right links">
                                     @auth
@@ -53,25 +55,32 @@
                             @endif
 
                             <div class="card-body">
-                                <div class="flex-center position-ref full-height">
+                                @if (auth()->check())
                                     <div class="content">
                                         <h4>Bienvenido, {{ auth()->user()->name }}</h4>
-                                        <h4>Hoy es {{ \Carbon\Carbon::now()->format('d/m/Y') }}</h4>
-                                        <div class="title m-b-md">
+                                        <div class="clockStyle" id="clock">123</div>
+
+                                    </div>
+                                @else
+                                    <div class="flex-center position-ref full-height">
+                                        <div class="content">
+                                            <h4>Bienvenido, para marcar asistencia inicie sesión.</h4>
                                             <div class="clockStyle" id="clock">123</div>
+
                                         </div>
                                     </div>
-                                </div>
+                                @endif
                             </div>
+                            
 
                             <div class="card-footer text-center">
                                 <div class="links">
                                     @if(session('button_text') == 'Salida')
                                     <button class="btn btn-danger" data-toggle="modal"
-                                        data-target="#markAttendanceModal">Salida</button>
+                                        data-target="#markAttendanceModal">Marcar Salida</button>
                                     @else
                                     <button class="btn btn-primary" data-toggle="modal"
-                                        data-target="#markAttendanceModal">Entrada</button>
+                                        data-target="#markAttendanceModal">Marcar Entrada</button>
                                     @endif
 
                                 </div>
