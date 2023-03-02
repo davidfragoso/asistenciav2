@@ -72,6 +72,16 @@
                                     </div>
                                 </div>
                             </div>
+                            
+                            
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <canvas id="attendance-chart"></canvas>
+                            </div>
+                            <div class="col-md-6">
+                                <canvas id="late-chart"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -79,4 +89,5 @@
         </div>
     </div>
 </section>
+
 @endsection

@@ -714,7 +714,41 @@ $(function () {
         attendanceIdInput.value = newId;
     });
 
-   
+   // Obtener los datos de asistencias y tardanzas desde el servidor
+   fetch('/api/attendances')
+   .then(response => response.json())
+   .then(data => {
+       // Filtrar los datos para obtener solo los de hoy
+       const today = new Date().toISOString().slice(0, 10);
+       const todayData = data.filter(entry => entry.date === today);
+
+       // Contar los usuarios que marcaron asistencia y los que llegaron tarde
+       const attendanceCount = todayData.filter(entry => entry.present === true).length;
+       const lateCount = todayData.filter(entry => entry.late === true).length;
+
+       // Crear los gráficos con los datos
+       new Chart(document.getElementById('attendance-chart').getContext('2d'), {
+           type: 'doughnut',
+           data: {
+               labels: ['Presente', 'Ausente'],
+               datasets: [{
+                   data: [attendanceCount, todayData.length - attendanceCount],
+                   backgroundColor: ['#36A2EB', '#FF6384']
+               }]
+           }
+       });
+
+       new Chart(document.getElementById('late-chart').getContext('2d'), {
+           type: 'doughnut',
+           data: {
+               labels: ['Llegó temprano', 'Llegó tarde'],
+               datasets: [{
+                   data: [todayData.length - lateCount, lateCount],
+                   backgroundColor: ['#36A2EB', '#FF6384']
+               }]
+           }
+       });
+   });
 
 
    

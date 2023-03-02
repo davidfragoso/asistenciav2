@@ -12,7 +12,7 @@
     </a>
 
     <div class="dropdown-menu dropdown-menu-right">
-    
+
         <a class="dropdown-item has-icon {{ Request::is('usuarios') ? 'active' : '' }}" href="/usuarios">
             <i class="fa fa-user"></i>Usuarios</a>
         <a class="dropdown-item has-icon {{ Request::is('roles') ? 'active' : '' }}" href="/roles">
@@ -27,12 +27,14 @@
     </a>
 
     <div class="dropdown-menu dropdown-menu-right">
-    
-        <a class="dropdown-item has-icon" href="/attendances">
+
+        <a class="dropdown-item has-icon {{ Request::is('welcome') ? 'active' : '' }}" href="/attendances">
             <i class="fa fa-user-clock"></i>Asistencia</a>
+        <a class="dropdown-item has-icon" href="/">
+            <i class="fa fa-user-clock"></i>Marcar asistencia</a>
         <a class="dropdown-item has-icon" href="#">
             <i class="fa fa-user"></i>Reportes</a>
-     
+
     </div>
 </li>
 
@@ -58,13 +60,11 @@
     </a>
 
     <div class="dropdown-menu dropdown-menu-right">
-    
+
         <a class="dropdown-item has-icon" href="#">
             <i class="fa fa-user-clock"></i>Asistencia</a>
         <a class="dropdown-item has-icon" href="#">
             <i class="fa fa-user"></i>Reportes</a>
-     
+
     </div>
 </li>
-
-

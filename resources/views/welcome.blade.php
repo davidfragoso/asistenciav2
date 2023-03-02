@@ -65,8 +65,9 @@
                                 <div class="flex-center position-ref full-height">
                                     <div class="content">
                                         <h4>Bienvenido, para marcar asistencia inicie sesión.</h4>
+                                        <div class="clockStyle" id="clock">123</div>
+
                                     </div>
-                                    <div class="clockStyle" id="clock">123</div>
                                 </div>
                                 @endif
                             </div>
@@ -75,17 +76,19 @@
                             <div class="card-footer text-center">
                                 <div class="links">
                                     @if(session('button_text') == 'Salida')
-                                        @if(session('attendance_saved'))
-                                            <p>Salida registrada correctamente!</p>
-                                        @else
-                                            <button class="btn btn-danger" data-toggle="modal" data-target="#markAttendanceModal">Marcar Salida</button>
-                                        @endif
+                                    @if(session('attendance_saved'))
+                                    <p>Salida registrada correctamente!</p>
                                     @else
-                                        @if(session('attendance_saved'))
-                                            <p>¡Asistencia registrada correctamente!</p>
-                                        @else
-                                            <button class="btn btn-primary" data-toggle="modal" data-target="#markAttendanceModal">Marcar Entrada</button>
-                                        @endif
+                                    <button class="btn btn-danger" data-toggle="modal"
+                                        data-target="#markAttendanceModal">Marcar Salida</button>
+                                    @endif
+                                    @else
+                                    @if(session('attendance_saved'))
+                                    <p>¡Asistencia registrada correctamente!</p>
+                                    @else
+                                    <button class="btn btn-primary" data-toggle="modal"
+                                        data-target="#markAttendanceModal">Marcar Entrada</button>
+                                    @endif
                                     @endif
                                 </div>
                                 <div class="modal fade" id="markAttendanceModal" tabindex="-1" role="dialog"
@@ -110,9 +113,9 @@
                                                 @csrf
                                                 <div class="modal-body">
                                                     <div class="form-group">
-                                                        <label for="user_id">ID de usuario:</label>
-                                                        <input type="text" class="form-control" id="user_id"
-                                                            name="user_id">
+                                                        <p>¿Desea marcar asistencia?</p> 
+                                                        {{-- <input type="text"
+                                                            class="form-control" id="user_id" name="user_id"> --}}
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">

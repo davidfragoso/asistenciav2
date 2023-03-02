@@ -15,7 +15,7 @@
             <table class="table table-striped mt-2">
               <thead style="background-color:#6777ef">
                 <th style="color:#fff">ID</th>
-                <th style="color:#fff">Asistencia_ID</th>
+                <th style="color:#fff">ID Asistencia</th>
                 <th style="color:#fff;">Nombre</th>
                 <th style="color:#fff;">E-mail</th>
                 <th style="color:#fff;">Rol</th>
