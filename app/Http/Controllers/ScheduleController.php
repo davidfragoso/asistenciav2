@@ -10,14 +10,14 @@ use App\Models\Department;
 class ScheduleController extends Controller
 {
     public function index()
-{
-    $schedules = Schedule::with('department')
-        ->join('departments', 'fixed_schedule.department_id', '=', 'departments.id')
-        ->select('fixed_schedule.*', 'departments.name as department')
-        ->paginate(10);
-    $departments = Department::paginate(5);
-    return view('schedules.index', compact('schedules', 'departments'));
-}
+    {
+        $schedules = Schedule::with('department')
+            ->join('departments', 'fixed_schedule.department_id', '=', 'departments.id')
+            ->select('fixed_schedule.*', 'departments.name as department')
+            ->paginate(10);
+        $departments = Department::paginate(5);
+        return view('schedules.index', compact('schedules', 'departments'));
+    }
 
 
     public function create()
@@ -47,7 +47,12 @@ class ScheduleController extends Controller
 
         return redirect()->route('schedules.index')->with('success', 'Horario creado exitosamente');
     }
-    
+
+    public function show(Schedule $schedule)
+    {
+        return view('schedules.show', compact('schedule'));
+    }
+
     public function edit(Schedule $schedule)
     {
         $departments = Department::all();

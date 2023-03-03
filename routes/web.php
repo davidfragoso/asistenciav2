@@ -39,6 +39,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/attendances/{id}', [AttendanceController::class, 'destroy'])->name('attendances.destroy');
     Route::post('/markAttendance', [AttendanceController::class, 'markAttendance'])->name('attendance.mark');
     Route::post('/markDeparture', [AttendanceController::class, 'markDeparture'])->name('attendance.departure');
+    Route::get('/attendance-chart-data', [AttendanceController::class, 'attendanceChartData'])->name('attendance.chartdata');
 
 
     Route::get('/departments', [DepartamentoController::class, 'index'])->name('departments.index');
@@ -50,10 +51,11 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     Route::get('schedules', [ScheduleController::class, 'index'])->name('schedules.index'); //vista principal de horarios
-    Route::get('schedules/create', [ScheduleController::class, 'create'])->name('schedules.create'); // vista de creación de un nuevo horario fijo
+    Route::get('departments/{department}/schedules/create', [ScheduleController::class, 'create'])->name('schedules.create');    // Ruta para mostrar el formulario de creación de horarios
     Route::post('schedules', [ScheduleController::class, 'store'])->name('schedules.store'); // almacenar los datos de un nuevo horario fijo
-    Route::get('schedules/{schedules}/edit', [ScheduleController::class, 'edit'])->name('schedules.edit'); // vista de edición de un horario fijo existente
+    Route::get('departments/{department}/schedules/{schedule}', [ScheduleController::class, 'show'])->name('schedules.show');    // Ruta para mostrar la vista de un horario en particular
+    Route::get('departments/{department}/schedules/{schedule}/edit', [ScheduleController::class, 'edit'])->name('schedules.edit');   // Ruta para mostrar el formulario de edición de un horario en particular
     Route::put('schedules/{schedules}', [ScheduleController::class, 'update'])->name('schedules.update'); // actualizar los datos de un horario fijo existente
-    Route::delete('schedules/{id}', [ScheduleController::class, 'destroy'])->name('schedules.destroy'); // eliminar un horario fijo existente
+    Route::delete('departments/{department}/schedules/{schedule}', [ScheduleController::class, 'destroy'])->name('schedules.destroy');    // Ruta para eliminar un horario en particular
 
 });
